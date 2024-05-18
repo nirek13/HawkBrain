@@ -5,8 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ThreeJS starter</title>
   <link rel="stylesheet" href="./index.scss">
+  <style>
+    /* Navbar styles */
+    .navbar {
+      background-color: #000000; /* Dark background color */
+      color: #fff; /* Text color */
+      padding: 10px; /* Add some padding */
+    }
+
+    .navbar ul {
+      list-style-type: none; /* Remove bullet points */
+      margin: 0; /* Remove default margin */
+      padding: 0; /* Remove default padding */
+      display: flex; /* Display items in a row */
+    }
+
+    .navbar li {
+      margin-right: 10px; /* Add some spacing between items */
+    }
+
+    .navbar li a {
+      color: #fff; /* Text color */
+      text-decoration: none; /* Remove underline */
+      padding: 5px 10px; /* Add padding to make clickable area larger */
+    }
+
+    .navbar li a:hover {
+      background-color: #555; /* Darken background color on hover */
+    }
+
+    .navbar img {
+      height: 30px; /* Adjust height as needed */
+      margin-right: 10px; /* Add spacing between image and text */
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      position: relative; /* Ensure positioning context for absolutely positioned elements */
+    }
+  
+    .navbar {
+      background-color: #000000;
+      color: #fff;
+      padding: 10px 20px;
+      position: fixed; /* Change positioning to fixed */
+      top: 0;
+      left: 0; /* Ensure it starts from the left */
+      width: 100%;
+      z-index: 1000; /* Ensure the navbar stays on top of other content */
+    }
+    .logo{
+      width: 100px;
+      height: auto;
+    }
+  
+  </style>
 </head>
 <body>
+  <div class="navbar">
+    <ul>
+      <li><img src="image.png" alt="Logo" class="logo"></li>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
   <div id="app"></div>
   <script type="module" src="./index.js"></script>
 </body>
