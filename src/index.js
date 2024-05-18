@@ -38,13 +38,15 @@ class App {
     this.rotationSpeed = 0.5
     
     this.colors = [
-      new Color(0xEAE0DA),
-      new Color(0xFFF8E3),
-      new Color(0xF1F1F1),
-      new Color(0xF2EFE5),
-      // new Color(0x7286D3)
-      new Color(0xFD8A8A)
-    ]
+      new Color("#FF00FF"), // Magenta
+      new Color("#FF00FF") , // Cyan
+      new Color("#FF00FF"), // Magenta
+      new Color("#000000"), // Cyan
+      new Color("000000")
+  ];
+  
+  
+  
 
     this.uniforms = {
       uHover: 0
