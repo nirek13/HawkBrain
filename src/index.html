@@ -6,11 +6,27 @@
   <title>ThreeJS starter</title>
   <link rel="stylesheet" href="./index.scss">
   <style>
-    /* Navbar styles */
+    /* Common styles */
+    body, html {
+      margin: 0;
+      padding: 0;
+      position: relative; /* Ensure positioning context for absolutely positioned elements */
+    }
+
+    .brain{
+      z-index: 100;
+    }
+
     .navbar {
-      background-color: #000000; /* Dark background color */
-      color: #fff; /* Text color */
-      padding: 10px; /* Add some padding */
+      padding: 10px 20px;
+      position: fixed; /* Change positioning to fixed */
+      top: 0;
+      left: 0; /* Ensure it starts from the left */
+      width: 100%;
+      z-index: 0; /* Ensure the navbar stays on top of other content */
+      display: flex;
+      justify-content: space-between; /* Space items to the edges */
+      align-items: center;
     }
 
     .navbar ul {
@@ -25,7 +41,6 @@
     }
 
     .navbar li a {
-      color: #fff; /* Text color */
       text-decoration: none; /* Remove underline */
       padding: 5px 10px; /* Add padding to make clickable area larger */
     }
@@ -35,44 +50,89 @@
     }
 
     .navbar img {
-      height: 30px; /* Adjust height as needed */
       margin-right: 10px; /* Add spacing between image and text */
+      cursor: pointer; /* Add cursor pointer for logo */
     }
 
-    body, html {
-      margin: 0;
-      padding: 0;
-      position: relative; /* Ensure positioning context for absolutely positioned elements */
-    }
-  
-    .navbar {
-      background-color: #000000;
-      color: #fff;
-      padding: 10px 20px;
-      position: fixed; /* Change positioning to fixed */
-      top: 0;
-      left: 0; /* Ensure it starts from the left */
-      width: 100%;
-      z-index: 1000; /* Ensure the navbar stays on top of other content */
-    }
-    .logo{
+    .logo {
+      height: 100px;
       width: 100px;
-      height: auto;
     }
-  
+
+    .left-nav,
+    .right-nav {
+      display: flex; /* Display items in a row */
+      align-items: center; /* Center items vertically */
+    }
+
+    .right-nav {
+      margin-left: auto; /* Push right nav items to the right */
+    }
+
+    /* Dark theme styles */
+    body.dark-theme {
+      background-color: #000000;
+      color: #ffffff;
+    }
+
+    .dark-theme .navbar {
+      background-color: #000000;
+      color: #ffffff;
+    }
+
+    .dark-theme .navbar li a {
+      color: #ffffff;
+    }
+
+    .dark-theme .navbar li a:hover {
+      background-color: #555555;
+    }
+
+    /* Light theme styles */
+    body.light-theme {
+      background-color: #ffffff;
+      color: #000000;
+    }
+
+    .light-theme .navbar {
+      background-color: #f8f8f8;
+      color: #000000;
+    }
+
+    .light-theme .navbar li a {
+      color: #000000;
+    }
+
+    .light-theme .navbar li a:hover {
+      background-color: #dddddd;
+    }
+    .a{
+      text-decoration: none;
+      text-underline: none;
+    }
   </style>
 </head>
-<body>
-  <div class="navbar">
+<body class="light-theme"> <!-- Default theme is light -->
+<div class="navbar">
+  <div class="left-nav">
+    <ul><img src="image.png" alt="Logo" class="logo" onclick="toggleTheme()"></ul>
+    <ul><a href="#">Brain Matter</a></ul>
+  </div>
+  <div class="right-nav">
     <ul>
-      <li><img src="image.png" alt="Logo" class="logo"></li>
-      <li><a href="#">Home</a></li>
       <li><a href="#">About</a></li>
       <li><a href="#">Services</a></li>
       <li><a href="#">Contact</a></li>
     </ul>
   </div>
-  <div id="app"></div>
-  <script type="module" src="./index.js"></script>
+</div>
+<div id="app"></div>
+<script type="module" src="./index.js" class="brain"></script>
+<script>
+  function toggleTheme() {
+    document.body.classList.toggle('dark-theme');
+    document.body.classList.toggle('light-theme');
+  }
+</script>
 </body>
 </html>

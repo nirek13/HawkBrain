@@ -29,6 +29,8 @@ import { gsap } from 'gsap'
 const stats = new Stats()
 
 
+
+
 class App {
   constructor(container) {
     this.container = document.querySelector(container)
@@ -36,17 +38,46 @@ class App {
     this.hover = false
 
     this.rotationSpeed = 0.5
-    
+
+    function _applyThemeColors() {
+      const theme = this._getCurrentTheme();
+      const colors = theme === 'dark-theme' ? this.darkColors : this.lightColors;
+      for (let i = 0; i < this.instancedMesh.count; i++) {
+        const colorIndex = MathUtils.randInt(0, colors.length - 2);
+        this.instancedMesh.setUniformAt('uColor', i, colors[colorIndex]);
+      }
+    }
+
+    function _getCurrentTheme() {
+      return document.body.classList.contains('dark-theme') ? 'dark-theme' : 'light-theme';
+    }
+
+    function _toggleTheme() {
+      const body = document.body;
+      const currentTheme = this._getCurrentTheme();
+      const newTheme = currentTheme === 'light-theme' ? 'dark-theme' : 'light-theme';
+      body.classList.remove(currentTheme);
+      body.classList.add(newTheme);
+      this._applyThemeColors(); // Apply theme colors after theme change
+    }
+
+    function _addListeners() {
+      window.addEventListener('resize', this._resizeCb, { passive: true })
+      window.addEventListener('mousemove', this._mousemoveCb, { passive: true })
+      window.addEventListener('click', this._mouseclick, { passive: false })
+      document.querySelector('.logo').addEventListener('click', () => this._toggleTheme()); // Add theme toggle listener
+    }
+
     this.colors = [
       new Color("#FF00FF"), // Magenta
       new Color("#FF00FF") , // Cyan
       new Color("#FF00FF"), // Magenta
-      new Color("#000000"), // Cyan
-      new Color("000000")
+      new Color("#ffffff"), // Cyan
+      new Color("#ffffff")
   ];
-  
-  
-  
+
+
+
 
     this.uniforms = {
       uHover: 0
@@ -80,7 +111,7 @@ class App {
 
         stats.end()
       })
-      
+
       console.log(this)
     })
   }
@@ -175,6 +206,8 @@ class App {
           }
         })
 
+
+
         this.instancedMesh = new InstancedUniformsMesh(geometry, material, this.brain.geometry.attributes.position.count)
 
         // Add the `InstancedMesh` to the scene
@@ -259,51 +292,25 @@ class App {
   }
 
   _onMouseClick(e) {
-    let isAKeyPressed = false;
+    const x = e.clientX / this.container.offsetWidth * 2 - 1;
+    const y = -(e.clientY / this.container.offsetHeight * 2 - 1);
+    this.mouse.set(x, y);
 
-    const onKeyDown = (event) => {
-        if (event.key === 'a') {
-            isAKeyPressed = true;
-        }
-    };
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    const intersects = this.raycaster.intersectObject(this.instancedMesh);
 
-    const onKeyUp = (event) => {
-        if (event.key === 'a') {
-            isAKeyPressed = false;
-        }
-    };
+    if (intersects.length > 0) {
+      // Get the ID of the clicked node
+      const clickedNodeId = intersects[0].instanceId;
 
-    const onClick = (event) => {
-        if (!isAKeyPressed) {
-            console.log("Press 'A' before clicking.");
-            return;
-        }
+      // Change the color of the clicked node to green
+      const greenColor = new Color("green");
+      this.instancedMesh.setUniformAt('uColor', clickedNodeId, greenColor);
+      console.log('Clicked')
+      this.instancedMesh.instanceColor.needsUpdate = true;
+    }
+  }
 
-        console.log("Clicked");
-        // Redirect to a specific URL
-        let topic = "calculus";
-        window.location.href = "https://hawkhacks1-bvi5p7bhg-nirek13s-projects.vercel.app";
-        // Redirect to a specific URL
-        window.location.assign("https://hawkhacks1-bvi5p7bhg-nirek13s-projects.vercel.app");
-
-        const x = event.clientX / this.container.offsetWidth * 2 - 1;
-        const y = -(event.clientY / this.container.offsetHeight * 2 - 1);
-        this.mouse.set(x, y);
-
-        const intersects = this.raycaster.intersectObjects(this.instancedMesh, true);
-
-        if (intersects.length > 0) {
-            console.log("Clicked object ID:", intersects[0].object.customId);
-        }
-    };
-
-    // Listen for keyboard events on document
-    document.addEventListener('keydown', onKeyDown);
-    document.addEventListener('keyup', onKeyUp);
-
-    // Listen for mouse click event on the element
-    this.container.addEventListener('click', onClick);
-}
 
 
   _onMousemove(e) {
